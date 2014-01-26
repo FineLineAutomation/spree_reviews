@@ -1,15 +1,17 @@
 <%= render :partial => "spree/feedback_reviews/summary", :locals => {:review => review}%>
-<%= form_for((@feedback_review ||= review.feedback_reviews.build), :url => feedback_review_path(review), :method => :post, :remote => true) do |f| %>
-<% unless @feedback_review.errors.empty? %>
- <span class="error"><%= @feedback_review.errors[:rating] %></span>
- <br />
-<% end %>
-<%= Spree.t(:was_this_review_helpful) %>
-<% for i in 1..NB_STARS %>
-<%= radio_button_tag "feedback_review[rating]", Spree.t('star', :count => i), false, :class => "star" %>
-<% end %>
-<%= hidden_field_tag "feedback_review[user_id]", spree_current_user.try(:id) %>
-<button class="feedback-review"><span><%= Spree.t("yes") %></span></button>
-<% end %>
+<% if review.feedback_reviews.where({ user_id: spree_current_user.id }).count == 0 %>
+  <%= form_for((@feedback_review ||= review.feedback_reviews.build), :url => feedback_review_path(review), :method => :post, :remote => true) do |f| %>
+    <% unless @feedback_review.errors.empty? %>
+      <span class="error"><%= @feedback_review.errors.full_messages.first %></span>
+      <br />
+    <% end %>
 
+    <%= Spree.t(:was_this_review_helpful) %>
+    <% for i in 1..NB_STARS %>
+      <%= radio_button_tag "feedback_review[rating]", Spree.t('star', :count => i), false, :class => "star" %>
+    <% end %>
 
+    <%= hidden_field_tag "feedback_review[user_id]", spree_current_user.try(:id) %>
+    <button class="feedback-review"><span><%= Spree.t("yes") %></span></button>
+  <% end %>
+<% end %>

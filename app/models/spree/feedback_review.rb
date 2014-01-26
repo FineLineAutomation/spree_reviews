@@ -4,6 +4,7 @@ class Spree::FeedbackReview < ActiveRecord::Base
 
   validates_presence_of :review_id
   validates_numericality_of :rating, :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 5, :message => Spree.t('you_must_enter_value_for_rating')
+  validates_uniqueness_of :user_id, :scope => :review_id, :message => Spree.t(:already_rated_review)
 
   default_scope order("spree_feedback_reviews.created_at DESC")
 
