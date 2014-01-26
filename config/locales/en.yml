@@ -66,3 +66,5 @@ en:
     was_this_review_helpful: "Was this review helpful to you?"
     write_your_own_review: Write your own review
     you_must_enter_value_for_rating: "You must enter a value for rating."
+    back_to_reviews_list: "Back to Reviews"
+    already_rated_review: "It appears you've already rated this review!"
